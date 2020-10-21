@@ -4,13 +4,43 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const chalk = require("chalk");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+init();
 
+function init() {
+  console.log(`Welcome to ${chalk.bold.green(
+    "ORG-CHART"
+  )}. This application will ask you for employee details and will produce a 
+    formatted web page that displays your organizational structure chart`);
+
+  promptUser();
+}
+
+function promptUser() {
+  inquirer
+    .prompt([
+      {
+        message: "Would you like to enter a new employee?",
+        name: "confirmation",
+        type: "confirm",
+      },
+    ])
+    .then(function (answers) {
+      if (answers.confirmation === true) {
+        console.log(`passed`);
+        //TODO:create employee func
+      } else {
+        //TODO:call function that confirms generate HTML
+        return;
+      }
+    });
+}
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
