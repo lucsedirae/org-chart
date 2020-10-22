@@ -34,13 +34,22 @@ function promptUser() {
     .then(function (answers) {
       if (answers.confirmation === true) {
         console.log(`passed`);
-        //TODO:create employee func
+        questionnaire();
       } else {
         //TODO:call function that confirms generate HTML
         return;
       }
-    });
+    })
 }
+
+function questionnaire () {
+    console.log(`success`);
+}
+
+
+
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
