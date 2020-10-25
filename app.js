@@ -10,6 +10,9 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
+
+const organization = [];
 
 init();
 
@@ -19,36 +22,145 @@ function init() {
   )}. This application will ask you for employee details and will produce a 
     formatted web page that displays your organizational structure chart`);
 
-  promptUser();
+  createManager();
 }
 
-function promptUser() {
+function buildTeam() {
+  console.log(organization);
+}
+
+function confirmNewEmployee() {
+  inquirer
+    .prompt({
+      //TODO: Create function to confirm if new employee
+      message: "Would you like to enter a new employee?",
+      type: "confirm",
+      name: "confirm",
+    })
+    .then(function (response) {
+      if (response.confirm === true) {
+        employeeMenu();
+      } else {
+        buildTeam();
+      }
+    });
+}
+
+function createManager() {
   inquirer
     .prompt([
       {
-        message: "Would you like to enter a new employee?",
-        name: "confirmation",
-        type: "confirm",
+        message: "Enter manager name: ",
+        name: "name",
+      },
+      {
+        message: "Enter manager id#: ",
+        name: "id",
+      },
+      {
+        message: "Enter manager email address: ",
+        name: "email",
+      },
+      {
+        message: "Enter manager officeNumber: ",
+        name: "officeNumber",
       },
     ])
     .then(function (answers) {
-      if (answers.confirmation === true) {
-        console.log(`passed`);
-        questionnaire();
-      } else {
-        //TODO:call function that confirms generate HTML
-        return;
-      }
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      organization.push(manager);
+      console.log(organization);
+      confirmNewEmployee();
+    });
+}
+
+function createEngineer() {
+  inquirer
+    .prompt([
+      {
+        message: "Enter engineer name: ",
+        name: "name",
+      },
+      {
+        message: "Enter engineer id#: ",
+        name: "id",
+      },
+      {
+        message: "Enter engineer email address: ",
+        name: "email",
+      },
+      {
+        message: "Enter engineer github: ",
+        name: "github",
+      },
+    ])
+    .then(function (answers) {
+      const engineer = new Engineer(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.github
+      );
+      organization.push(engineer);
+      console.log(organization);
+      confirmNewEmployee();
+    });
+}
+
+function createIntern() {
+  inquirer
+    .prompt([
+      {
+        message: "Enter intern name: ",
+        name: "name",
+      },
+      {
+        message: "Enter intern id#: ",
+        name: "id",
+      },
+      {
+        message: "Enter intern email address: ",
+        name: "email",
+      },
+      {
+        message: "Enter intern school: ",
+        name: "school",
+      },
+    ])
+    .then(function (answers) {
+      const intern = new Intern(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.school
+      );
+      organization.push(intern);
+      console.log(organization);
+      confirmNewEmployee();
+    });
+}
+
+function employeeMenu() {
+  inquirer
+    .prompt({
+      message: "Please select an employee role: ",
+      type: "checkbox",
+      name: "empRole",
+      choices: ["Intern", "Engineer"],
     })
+    .then(function (input) {
+      if (input.empRole == "Intern") {
+        createIntern();
+      }else if (input.empRole == "Engineer") {
+        createEngineer();
+      }
+    });
 }
-
-function questionnaire () {
-    console.log(`success`);
-}
-
-
-
-
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
