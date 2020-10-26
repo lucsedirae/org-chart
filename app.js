@@ -21,18 +21,22 @@ function init() {
     "ORG-CHART"
   )}. This application will ask you for employee details and will produce a 
     formatted web page that displays your organizational structure chart`);
-
+  
   createManager();
 }
 
 function buildTeam() {
-  console.log(organization);
+  fs.writeFile(outputPath, render(organization), function(err){
+    if (err) {
+      return console.log(err);
+    }
+  });
+  console.log(chalk.bold.green("Success!") + " HTML file created.")
 }
 
 function confirmNewEmployee() {
   inquirer
     .prompt({
-      //TODO: Create function to confirm if new employee
       message: "Would you like to enter a new employee?",
       type: "confirm",
       name: "confirm",
@@ -50,19 +54,19 @@ function createManager() {
   inquirer
     .prompt([
       {
-        message: "Enter manager name: ",
+        message: "Enter " + chalk.red("manager") + " name: ",
         name: "name",
       },
       {
-        message: "Enter manager id#: ",
+        message: "Enter " + chalk.red("manager") + " id#: ",
         name: "id",
       },
       {
-        message: "Enter manager email address: ",
+        message: "Enter " + chalk.red("manager") + " email address: ",
         name: "email",
       },
       {
-        message: "Enter manager officeNumber: ",
+        message: "Enter " + chalk.red("manager") + " officeNumber: ",
         name: "officeNumber",
       },
     ])
@@ -74,7 +78,6 @@ function createManager() {
         answers.officeNumber
       );
       organization.push(manager);
-      console.log(organization);
       confirmNewEmployee();
     });
 }
@@ -83,19 +86,19 @@ function createEngineer() {
   inquirer
     .prompt([
       {
-        message: "Enter engineer name: ",
+        message: "Enter " + chalk.red("engineer") + " name: ",
         name: "name",
       },
       {
-        message: "Enter engineer id#: ",
+        message: "Enter  "+ chalk.red("engineer") + " id#: ",
         name: "id",
       },
       {
-        message: "Enter engineer email address: ",
+        message: "Enter "+ chalk.red("engineer") + " email address: ",
         name: "email",
       },
       {
-        message: "Enter engineer github: ",
+        message: "Enter "+ chalk.red("engineer") + " github: ",
         name: "github",
       },
     ])
@@ -107,7 +110,6 @@ function createEngineer() {
         answers.github
       );
       organization.push(engineer);
-      console.log(organization);
       confirmNewEmployee();
     });
 }
@@ -116,19 +118,19 @@ function createIntern() {
   inquirer
     .prompt([
       {
-        message: "Enter intern name: ",
+        message: "Enter "+ chalk.red("intern") + " name: ",
         name: "name",
       },
       {
-        message: "Enter intern id#: ",
+        message: "Enter "+ chalk.red("intern") + " id#: ",
         name: "id",
       },
       {
-        message: "Enter intern email address: ",
+        message: "Enter "+ chalk.red("intern") + " email address: ",
         name: "email",
       },
       {
-        message: "Enter intern school: ",
+        message: "Enter "+ chalk.red("intern") + " school: ",
         name: "school",
       },
     ])
@@ -140,7 +142,6 @@ function createIntern() {
         answers.school
       );
       organization.push(intern);
-      console.log(organization);
       confirmNewEmployee();
     });
 }
@@ -161,26 +162,3 @@ function employeeMenu() {
       }
     });
 }
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
